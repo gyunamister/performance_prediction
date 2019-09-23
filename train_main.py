@@ -19,15 +19,14 @@ from prediction.models import *
 from sklearn import preprocessing
 
 if __name__ == '__main__':
-	#python train_main.py --fv_format '2d' --prediction 'state' --exp_id 'BPIC15_avg_sojourn_2d_2011-02-01-2011-02-01_range0,0,0,72,0,0_stride0,0,0,24,0,0_input30_output1_500' --algo 'basic_SVR'
-	#python train_main.py --fv_format '2d' --prediction 'state' --exp_id 'helpdesk_avg_sojourn_2d_2010-02-01-2010-02-01_range0,0,0,72,0,0_stride0,0,0,24,0,0_input15_output1_0' --algo 'basic_CNN'
 	parser = argparse.ArgumentParser()
-	parser.add_argument('--search', type=str, choices=['True', 'False'])
-	parser.add_argument('--fv_format', type=str, choices=['2d', '3d'])
-	parser.add_argument('--prediction', type=str, choices=['state', 'trans'])
-	parser.add_argument('--exp_id', type=str)
-	parser.add_argument('--algo', type=str)
-	parser.add_argument('--result', type=str)
+	parser.add_argument('--search', type=str, choices=['True', 'False'], default='False')
+	parser.add_argument('--prediction', type=str, choices=['state', 'trans'], default='state')
+	parser.add_argument('--exp_id', type=str, default='None')
+	parser.add_argument('--result', type=str, default='None')
+	parser.add_argument('--fv_format', type=str, choices=['2d', '3d'], default='2d')
+	parser.add_argument('--algo', type=str, default='basic_LR')
+
 	FLAGS, unparsed = parser.parse_known_args()
 
 	fv_format = FLAGS.fv_format
@@ -43,6 +42,7 @@ if __name__ == '__main__':
 	else:
 		search_based = False
 
+	#apply seach-based method
 	if search_based == True:
 		fv = np.load('./matrices/fv_{}_{}.npy'.format(prediction, exp_id))
 		from sklearn.model_selection import KFold
@@ -106,10 +106,8 @@ if __name__ == '__main__':
 
 	#basic_LRCN
 	elif algo == 'basic_LRCN':
-		#model = basic_LRCN(_input, _output)
 		model_name = 'basic_LRCN_{}_{}'.format(prediction, exp_id)
 		accuracy = train_and_evaluate(model_name, basic_LRCN, _input, _output)
-		#save_model(model, model_name)
 
 	#Linear Regression
 	elif algo == 'basic_LR':

@@ -456,31 +456,11 @@ def produce_2d_result(pred, int_to_trans, filename):
 
 def mean_absolute_percentage_error(actual, pred):
     mape_list = list()
-    #actual = actual*60
-    #pred = pred*60
-    for i, t in enumerate(actual):
-        for j, s in enumerate(t):
-            if s < 0.3:
-                ape = 0
-            else:
-                #ape = abs((s-pred[i][j])/s)
-                #ape = abs((s-pred[i][j])/(abs(s)+abs(pred[i][j])))
-                ape = abs((s-pred[i][j])/(s+pred[i][j]))
-            mape_list.append(ape)
-
-    return round(np.mean(mape_list),3)
-
-def mean_absolute_percentage_error_2(actual, pred):
-    mape_list = list()
-    #actual = actual*60
-    #pred = pred*60
     for i, t in enumerate(actual):
         for j, s in enumerate(t):
             if s == 0:
                 continue
             else:
-                #ape = abs((s-pred[i][j])/s)
-                #ape = abs((s-pred[i][j])/(abs(s)+abs(pred[i][j])))
                 ape = abs((s-pred[i][j])/(s+pred[i][j]))
             mape_list.append(ape)
 

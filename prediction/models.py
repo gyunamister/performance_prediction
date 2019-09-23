@@ -49,8 +49,7 @@ def train_and_evaluate(model_name, get_model, X, y):
 			#y_actual = y_actual.reshape(y_actual.shape[0], y_actual.shape[2])
 			mae = round(mean_absolute_error(y_actual, y_pred),4)
 			mape = mean_absolute_percentage_error(y_actual, y_pred)
-			mape2 = mean_absolute_percentage_error_2(y_actual, y_pred)
-			k_accuracy = [mae, mape, mape2]
+			k_accuracy = [mae, mape]
 			print(k_accuracy)
 		accuracy.append(k_accuracy)
 	return accuracy
@@ -83,9 +82,8 @@ def basic_LSTM(model_name, X, y, train, validation, epochs, batch_size, droprate
 	# evaluation
 	y_pred = model.predict(val_X)
 	mape = mean_absolute_percentage_error(val_y, y_pred)
-	mape2 = mean_absolute_percentage_error_2(val_y, y_pred)
 	mae = round(mean_absolute_error(val_y, y_pred), 4)
-	k_accuracy = [mae, mape, mape2]
+	k_accuracy = [mae, mape]
 	print(k_accuracy)
 	return k_accuracy
 
@@ -160,9 +158,8 @@ def basic_CNN(model_name, X, y, train, validation, epochs, batch_size, droprate=
 		print("Pred: {}, Actual: {}".format(y_pred[i], val_y[i]))
 	"""
 	mape = mean_absolute_percentage_error(val_y, y_pred)
-	mape2 = mean_absolute_percentage_error_2(val_y, y_pred)
 	mae = round(mean_absolute_error(val_y, y_pred), 4)
-	k_accuracy = [mae, mape, mape2]
+	k_accuracy = [mae, mape]
 	print(k_accuracy)
 	return k_accuracy
 
@@ -212,9 +209,8 @@ def basic_LRCN(model_name, X, y, train, validation, epochs, batch_size, droprate
 	# evaluation
 	y_pred = model.predict(val_X)
 	mape = mean_absolute_percentage_error(val_y, y_pred)
-	mape2 = mean_absolute_percentage_error_2(val_y, y_pred)
 	mae = round(mean_absolute_error(val_y, y_pred), 4)
-	k_accuracy = [mae, mape, mape2]
+	k_accuracy = [mae, mape]
 	print(k_accuracy)
 	return k_accuracy
 

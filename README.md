@@ -54,10 +54,12 @@ The code provided in this repository can be readily used to predict the future p
     - fv_format: the format of process representation matrix
     - algo: name of a model (e.g., CNN, LSTM, LRCN, ...)
 - For the detailed implementation, see the main files.
-- **Evaluation**
-  - Case study 2: BPIC'12
-    - The second case study can be reproduced by typing :  `$ sh bpic12_exp_1.sh`
-    - The result is reported in `./results/BPIC12_exp_result_1.txt`
-  - Case study 3: Helpdesk
-    - The second case study can be reproduced by typing :  `$ sh hd_exp_1.sh`
-    - The result is reported in `./results/HD_exp_result_1.txt`
+
+### Evaluation
+
+- Case study 2: BPIC'12
+  - The second case study can be reproduced by typing :  `$ sh bpic12_exp_1.sh`
+  - The result is reported in `./results/BPIC12_exp_result_1.txt`
+- Case study 3: Helpdesk
+  - The second case study can be reproduced by typing :  `$ sh hd_exp_1.sh`
+  - The result is reported in `./results/HD_exp_result_1.txt`

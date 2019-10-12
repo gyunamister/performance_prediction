@@ -66,9 +66,9 @@ The code provided in this repository can be readily used to predict the future p
 
 ### Appendix
 
-Below is the further experimental results for the paper titled "Predicting Performances in Business Processes uisng Deep Neural Networks".
+Below is the further experimental results for the paper titled "Predicting Performances in Business Processes uisng Deep Neural Networks". We conduct experiments on three datasets used in case studies by varying the prefix length (i.e., *horizon*).
 
-#### Effect of varying the prefix length on healthcare process
+#### 1. Effect of varying *horizon* on healthcare service process
 
 ##### Task 1
 
@@ -86,10 +86,10 @@ Below is the further experimental results for the paper titled "Predicting Perfo
 
 ![HOS-1](./experimental_results/HOS-4.png)
 
-##### Effect of varying the prefix length on BPIC'12
+#### 2. Effect of varying *horizon* on BPIC'12
 
 ![HOS-1](./experimental_results/BPIC12.png)
 
-##### Effect of varying the prefix length on Helpdesk
+#### 3. Effect of varying *horizon* on Helpdesk
 
 ![HOS-1](./experimental_results/Helpdesk.png)

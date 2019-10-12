@@ -63,3 +63,33 @@ The code provided in this repository can be readily used to predict the future p
 - Case study 3: Helpdesk
   - The second case study can be reproduced by typing :  `$ sh hd_exp_1.sh`
   - The result is reported in `./results/HD_exp_result_1.txt`
+
+### Appendix
+
+Below is the further experimental results for the paper titled "Predicting Performances in Business Processes uisng Deep Neural Networks".
+
+#### Effect of varying the prefix length on healthcare process
+
+##### Task 1
+
+![HOS-1](./experimental_results/HOS-1.png)
+
+##### Task 2
+
+![HOS-1](./experimental_results/HOS-2.png)
+
+##### Task 3
+
+![HOS-1](./experimental_results/HOS-3.png)
+
+##### Task 4
+
+![HOS-1](./experimental_results/HOS-4.png)
+
+##### Effect of varying the prefix length on BPIC'12
+
+![HOS-1](./experimental_results/BPIC12.png)
+
+##### Effect of varying the prefix length on Helpdesk
+
+![HOS-1](./experimental_results/Helpdesk.png)

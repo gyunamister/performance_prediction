@@ -563,7 +563,7 @@ def search_based_method(training, test, dist_func):
 		actuals.append(actual)
 		preds.append(pred)
 	mae = mean_absolute_error(actuals, preds)
-	mape = mean_absolute_percentage_error_2(actuals, preds)
+	mape = mean_absolute_percentage_error(actuals, preds)
 
 	return round(mae,4), round(mape,4)
 

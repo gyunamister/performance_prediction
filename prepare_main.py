@@ -65,7 +65,7 @@ if __name__ == '__main__':
 	node_threshold = FLAGS.node_threshold
 	horizon = FLAGS.horizon
 
-	exp_id = '{}_{}_{}_{}_{}-{}_range{}_stride{}_input{}_output{}_{}_{}'.format(exp_name, agg, measure, fv_format, s_date, e_date, tw_range, tw_stride, input_size, output_size, edge_threshold, node_threshold)
+	exp_id = '{}_{}_{}_{}_{}-{}_range{}_stride{}_input{}_output{}_{}_{}_{}'.format(exp_name, agg, measure, fv_format, s_date, e_date, tw_range, tw_stride, input_size, output_size, edge_threshold, node_threshold, horizon)
 
 	#eventlog import
 	case, activity, timestamp = 'CASEOID', 'ACTIVITYOID', 'TIMESTAMP'

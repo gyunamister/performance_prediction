@@ -72,24 +72,24 @@ Below is the further experimental result for the paper titled "Predicting Perfor
 
 ##### Task 1
 
-![HOS-1](./experimental_result/HOS-1.png)
+![HOS-1](./experimental_results/HOS-1.png)
 
 ##### Task 2
 
-![HOS-1](./experimental_result/HOS-2.png)
+![HOS-1](./experimental_results/HOS-2.png)
 
 ##### Task 3
 
-![HOS-1](./experimental_result/HOS-3.png)
+![HOS-1](./experimental_results/HOS-3.png)
 
 ##### Task 4
 
-![HOS-1](./experimental_result/HOS-4.png)
+![HOS-1](./experimental_results/HOS-4.png)
 
 #### 2. Effect of varying *horizon* on BPIC'12
 
-![HOS-1](./experimental_result/BPIC12.png)
+![HOS-1](./experimental_results/BPIC12.png)
 
 #### 3. Effect of varying *horizon* on Helpdesk
 
-![HOS-1](./experimental_result/Helpdesk.png)
+![HOS-1](./experimental_results/Helpdesk.png)

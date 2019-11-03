@@ -45,7 +45,7 @@ The code provided in this repository can be readily used to predict the future p
     - node_threshold: the threshold for nodes in the process model
     - edge_threshold: the threshold for edges in the process model
     - horizon: the number of prefixes to consider when building transition matrix
-- "train_main.py" is responsible for training and testing the approaches presented in the paper (i.e., statistical approach, search-based approach, and deep-learning approach). The results are saved into "./results/".
+- "train_main.py" is responsible for training and testing the approaches presented in the paper (i.e., statistical approach, search-based approach, and deep-learning approach). The result are saved into "./result/".
   - The keyword arguments are as follows:
     - exp_id: the name of the experiment which is given by "prepare.py".
     - search: True if applying search-based approach
@@ -59,37 +59,37 @@ The code provided in this repository can be readily used to predict the future p
 
 - Case study 2: BPIC'12
   - The second case study can be reproduced by typing :  `$ sh bpic12_exp_1.sh`
-  - The result is reported in `./results/BPIC12_exp_result_1.txt`
+  - The result is reported in `./result/BPIC12_exp_result_1.txt`
 - Case study 3: Helpdesk
   - The second case study can be reproduced by typing :  `$ sh hd_exp_1.sh`
-  - The result is reported in `./results/HD_exp_result_1.txt`
+  - The result is reported in `./result/HD_exp_result_1.txt`
 
 ### Appendix
 
-Below is the further experimental results for the paper titled "Predicting Performances in Business Processes uisng Deep Neural Networks". We conduct experiments on three datasets used in case studies by varying the prefix length (i.e., *horizon*).
+Below is the further experimental result for the paper titled "Predicting Performances in Business Processes uisng Deep Neural Networks". We conduct experiments on three datasets used in case studies by varying the prefix length (i.e., *horizon*).
 
 #### 1. Effect of varying *horizon* on healthcare service process
 
 ##### Task 1
 
-![HOS-1](./experimental_results/HOS-1.png)
+![HOS-1](./experimental_result/HOS-1.png)
 
 ##### Task 2
 
-![HOS-1](./experimental_results/HOS-2.png)
+![HOS-1](./experimental_result/HOS-2.png)
 
 ##### Task 3
 
-![HOS-1](./experimental_results/HOS-3.png)
+![HOS-1](./experimental_result/HOS-3.png)
 
 ##### Task 4
 
-![HOS-1](./experimental_results/HOS-4.png)
+![HOS-1](./experimental_result/HOS-4.png)
 
 #### 2. Effect of varying *horizon* on BPIC'12
 
-![HOS-1](./experimental_results/BPIC12.png)
+![HOS-1](./experimental_result/BPIC12.png)
 
 #### 3. Effect of varying *horizon* on Helpdesk
 
-![HOS-1](./experimental_results/Helpdesk.png)
+![HOS-1](./experimental_result/Helpdesk.png)

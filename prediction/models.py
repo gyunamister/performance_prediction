@@ -1,6 +1,7 @@
 import pickle
 from sklearn.metrics import mean_absolute_error
 from preprocess.util import *
+import time
 def get_callbacks(model_path, patience_lr, patience_es):
 	from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 	mcp_save = ModelCheckpoint(model_path, save_best_only=True, monitor='val_loss', mode='min')
@@ -25,15 +26,18 @@ def train_and_evaluate(model_name, get_model, X, y):
 		model_path = "./prediction/models/{}-fold{}.h5".format(model_name,j)
 		if dnn == True:
 			callbacks = get_callbacks(model_path, patience_lr=3, patience_es=5)
-			k_accuracy = get_model(model_name, X, y, train, validation, epochs=epochs, batch_size=batch_size, verbose=1, callbacks=callbacks)
+			k_accuracy, training_time, pred_time = get_model(model_name, X, y, train, validation, epochs=epochs, batch_size=batch_size, verbose=1, callbacks=callbacks)
 		else:
 			y_pred, y_actual = list(), list()
+			training_times, pred_times = list(), list()
 			for i in range(y.shape[2]):
 				sub_X = X[:,:,i]
 				sub_y = y[:,:,i]
-				sub_y_pred, sub_y_actual = get_model(model_name, model_path, sub_X, sub_y, train, validation)
+				sub_y_pred, sub_y_actual, training_time, pred_time = get_model(model_name, model_path, sub_X, sub_y, train, validation)
 				y_pred.append(sub_y_pred)
 				y_actual.append(sub_y_actual)
+				training_times.append(training_time)
+				pred_times.append(pred_time)
 			y_pred = np.array(y_pred)
 			print(y_pred.shape)
 			y_pred = np.swapaxes(np.array(y_pred),0,1)
@@ -51,7 +55,13 @@ def train_and_evaluate(model_name, get_model, X, y):
 			mape = mean_absolute_percentage_error(y_actual, y_pred)
 			k_accuracy = [mae, mape]
 			print(k_accuracy)
+			training_time = sum(training_times)
+			pred_time = sum(pred_times)
 		accuracy.append(k_accuracy)
+		if j == 0:
+			with open("./result/computation_time.txt", "a") as f:
+				f.write("Model: {}, {} \t {} \n".format(model_name, training_time, pred_time))
+			#break
 	return accuracy
 
 
@@ -77,15 +87,22 @@ def basic_LSTM(model_name, X, y, train, validation, epochs, batch_size, droprate
 	train_X, train_y, val_X, val_y = X[train], y[train], X[validation], y[validation]
 
 	#train the model
+	# to measure computation time
+	train_start = time.time()
 	model.fit(train_X, train_y, epochs=epochs, batch_size=batch_size, verbose=1, validation_data=(val_X, val_y), callbacks=callbacks)
-
+	train_finish = time.time()
+	training_time = (train_finish - train_start)
 	# evaluation
+	pred_start = time.time()
 	y_pred = model.predict(val_X)
+	pred_finish = time.time()
+	pred_time = (pred_finish - pred_start)
+
 	mape = mean_absolute_percentage_error(val_y, y_pred)
 	mae = round(mean_absolute_error(val_y, y_pred), 4)
 	k_accuracy = [mae, mape]
 	print(k_accuracy)
-	return k_accuracy
+	return k_accuracy, training_time, pred_time
 
 def basic_CNN(model_name, X, y, train, validation, epochs, batch_size, droprate=0.25, verbose=1, callbacks=[]):
 	from keras.models import Sequential
@@ -147,10 +164,15 @@ def basic_CNN(model_name, X, y, train, validation, epochs, batch_size, droprate=
 	train_X, train_y, val_X, val_y = X[train], y[train], X[validation], y[validation]
 
 	#train the model
+	train_start = time.time()
 	model.fit(train_X, train_y, epochs=epochs, batch_size=batch_size, verbose=1, validation_data=(val_X, val_y), callbacks=callbacks)
-
+	train_finish = time.time()
+	training_time = (train_finish - train_start)
 	# evaluation
+	pred_start = time.time()
 	y_pred = model.predict(val_X)
+	pred_finish = time.time()
+	pred_time = (pred_finish - pred_start)
 	#if normalizing input/output
 	#y_pred = output_scaler.inverse_transform(y_pred)
 	"""
@@ -161,7 +183,7 @@ def basic_CNN(model_name, X, y, train, validation, epochs, batch_size, droprate=
 	mae = round(mean_absolute_error(val_y, y_pred), 4)
 	k_accuracy = [mae, mape]
 	print(k_accuracy)
-	return k_accuracy
+	return k_accuracy, training_time, pred_time
 
 def basic_LRCN(model_name, X, y, train, validation, epochs, batch_size, droprate=0.25, verbose=1, callbacks=[]):
 	from keras.models import Sequential
@@ -204,15 +226,21 @@ def basic_LRCN(model_name, X, y, train, validation, epochs, batch_size, droprate
 
 	#train the model
 	train_X, train_y, val_X, val_y = X[train], y[train], X[validation], y[validation]
+	train_start = time.time()
 	model.fit(train_X, train_y, epochs=epochs, batch_size=batch_size, verbose=1, validation_data=(val_X, val_y), callbacks=callbacks)
-
+	train_finish = time.time()
+	training_time = (train_finish - train_start)
 	# evaluation
+	pred_start = time.time()
 	y_pred = model.predict(val_X)
+	pred_finish = time.time()
+	pred_time = (pred_finish - pred_start)
+
 	mape = mean_absolute_percentage_error(val_y, y_pred)
 	mae = round(mean_absolute_error(val_y, y_pred), 4)
 	k_accuracy = [mae, mape]
 	print(k_accuracy)
-	return k_accuracy
+	return k_accuracy, training_time, pred_time
 
 def basic_linear_regression(model_name, model_path, X, y, train, validation):
 	from sklearn import linear_model
@@ -221,31 +249,42 @@ def basic_linear_regression(model_name, model_path, X, y, train, validation):
 	train_X, train_y, val_X, val_y = X[train], y[train], X[validation], y[validation]
 
 	# Train the model using the training sets
+	train_start = time.time()
 	model.fit(train_X, train_y)
+	train_finish = time.time()
+	training_time = (train_finish - train_start)
 
 	# evaluation
+	pred_start = time.time()
 	sub_y_pred = model.predict(val_X)
+	pred_finish = time.time()
+	pred_time = (pred_finish - pred_start)
 
 	# save the model to disk
 	#pickle.dump(model, open(model_path, 'wb'))
 
-	return sub_y_pred, val_y
+	return sub_y_pred, val_y, training_time, pred_time
 
 def basic_random_forest(model_name, model_path, X, y, train, validation):
 	from sklearn.ensemble import RandomForestRegressor
 	model = RandomForestRegressor(max_depth=2, random_state=0, n_estimators=100)
 
 	train_X, train_y, val_X, val_y = X[train], y[train], X[validation], y[validation]
-
+	train_start = time.time()
 	model.fit(train_X, train_y)
+	train_finish = time.time()
+	training_time = (train_finish - train_start)
 
 	# evaluation
+	pred_start = time.time()
 	sub_y_pred = model.predict(val_X)
+	pred_finish = time.time()
+	pred_time = (pred_finish - pred_start)
 
 	# save the model to disk
 	pickle.dump(model, open(model_path, 'wb'))
 
-	return sub_y_pred, val_y
+	return sub_y_pred, val_y, training_time, pred_time
 
 def basic_SVR(model_name, model_path, X, y, train, validation):
 	#print(X_train.shape, y_train.shape)
@@ -254,15 +293,21 @@ def basic_SVR(model_name, model_path, X, y, train, validation):
 
 	train_X, train_y, val_X, val_y = X[train], y[train], X[validation], y[validation]
 
+	train_start = time.time()
 	model.fit(train_X, train_y)
+	train_finish = time.time()
+	training_time = (train_finish - train_start)
 
 	# evaluation
+	pred_start = time.time()
 	sub_y_pred = model.predict(val_X)
+	pred_finish = time.time()
+	pred_time = (pred_finish - pred_start)
 
 	# save the model to disk
 	pickle.dump(model, open(model_path, 'wb'))
 
-	return sub_y_pred, val_y
+	return sub_y_pred, val_y, training_time, pred_time
 
 def advanced_LRCN(trans_X_train, trans_y_train, state_X_train, state_y_train):
 	from keras.layers import Input, Dense, TimeDistributed, Conv2D, MaxPooling2D, Dense, Dropout, Flatten, Activation, LSTM, BatchNormalization, concatenate

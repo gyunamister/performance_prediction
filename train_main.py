@@ -58,9 +58,19 @@ if __name__ == '__main__':
 				training_fv, test_fv = training_fv/60, test_fv/60
 			from scipy.spatial.distance import euclidean, chebyshev, cosine
 			dist_func_list = [euclidean, chebyshev, cosine]
+			pred_times = list()
 			for i, dist_func in enumerate(dist_func_list):
+				pred_start = time.time()
 				mae, mape = search_based_method(training_fv, test_fv, dist_func)
+				pred_finish = time.time()
+				pred_time = (pred_finish - pred_start)
+				pred_times.append(pred_time)
 				metrics_list[i].append([mae,mape])
+			if j == 0:
+				with open("./result/computation_time.txt".format(result), "a") as f:
+					f.write("Model: {}-{}, {} \t {} \t {} \n".format(prediction, exp_id, pred_times[0], pred_times[1], pred_times[2]))
+				#break
+
 		with open("./result/{}.txt".format(result), "a") as f:
 			f.write("{} - exp_id: {} \n EUC: \n accuracy: {} \n".format(prediction, exp_id, metrics_list[0]))
 			f.write("{} - exp_id: {} \n CHE: \n accuracy: {} \n".format(prediction, exp_id, metrics_list[1]))

@@ -266,9 +266,17 @@ def compute_avg_time(transition_matrix, measure):
     from statistics import mean
     for ai in transition_matrix:
         if measure in transition_matrix[ai] and len(transition_matrix[ai][measure])!=0:
-            avg = sum(transition_matrix[ai][measure], datetime.timedelta(0))/len(transition_matrix[ai][measure])
-            avg = divmod(avg.days * 86400 + avg.seconds, 86400)
-            avg_minute = 24*60*avg[0] + avg[1]/60
+            #avg = sum(transition_matrix[ai][measure], datetime.timedelta(0))/len(transition_matrix[ai][measure])
+            #avg = divmod(avg.days * 86400 + avg.seconds, 86400)
+            #avg_minute = 24*60*avg[0] + avg[1]/60
+            upper = np.percentile(transition_matrix[ai][measure], 50)
+            #lower = np.percentile(transition_matrix[ai][measure], 0)
+            lower=0
+            transition_matrix[ai][measure] = [x for x in transition_matrix[ai][measure] if x<=upper and x>=lower]
+            if len(transition_matrix[ai][measure])!=0:
+                avg_minute = sum(transition_matrix[ai][measure])/len(transition_matrix[ai][measure])
+            else:
+                avg_minute = 0
         else:
             avg_minute = 0
         """
@@ -280,9 +288,10 @@ def compute_avg_time(transition_matrix, measure):
             if len(transition_matrix[ai]['outgoings'][aj][measure])==0:
                 avg_minute=0
             else:
-                avg = sum(transition_matrix[ai]['outgoings'][aj][measure], datetime.timedelta(0))/len(transition_matrix[ai]['outgoings'][aj][measure])
-                avg = divmod(avg.days * 86400 + avg.seconds, 86400)
-                avg_minute = 24*60*avg[0] + avg[1]/60
+                #avg = sum(transition_matrix[ai]['outgoings'][aj][measure], datetime.timedelta(0))/len(transition_matrix[ai]['outgoings'][aj][measure])
+                #avg = divmod(avg.days * 86400 + avg.seconds, 86400)
+                #avg_minute = 24*60*avg[0] + avg[1]/60
+                avg_minute = np.mean(transition_matrix[ai]['outgoings'][aj][measure])
             transition_matrix[ai]['outgoings'][aj]['avg_{}'.format(measure)] = avg_minute
     #print(transition_matrix)
     return transition_matrix
